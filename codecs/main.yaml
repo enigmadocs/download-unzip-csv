@@ -1,0 +1,52 @@
+name: main
+description: >
+  The main codec to transform quarterly CSV data.
+
+transform:
+
+  - step: Filter out the header line.
+    action: transform.filter.FilterLines
+    filter_list:
+      - line_number: 0
+        patterns:
+          - '^name,url,formed,street,city,state,zip\s+$'
+
+  - step: Set the main table schema.
+    action: transform.schema.SetSchema
+    fields:
+      - name: name
+        type: string
+      - name: url
+        type: string
+      - name: formed
+        type: date
+      - name: street
+        type: string
+      - name: city
+        type: string
+      - name: state
+        type: string
+      - name: zip
+        type: integer
+
+  - step: Read the CSV file.
+    action: extract.formats.CSV.ReadRecords
+
+  - step: Coerce date field null values to None.
+    action: transform.strings.DisambiguateNulls
+    fields:
+      - formed
+    nulls:
+      - ''
+  - step: Parse the date field values.
+    action: transform.conversion.ParseDatetime
+    fields:
+      - field_name: formed
+        date_only: true
+        formats:
+          - 'YYYY-MM-DD'
+
+load:
+  - step: Load into CSV
+    action: load.OutputCSV
+    repository: .

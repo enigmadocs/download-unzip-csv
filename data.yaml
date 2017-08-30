@@ -1,0 +1,20 @@
+###
+# parser1
+# 2017-03-01
+###
+
+extract:
+
+  - step: Download the data via HTTP.
+    action: http.DownloadFiles
+    fetch:
+      - 'https://s3.amazonaws.com/data-code-test/example.zip'
+
+  - step: Unzip the compressed data.
+    action: compression.UncompressFile
+
+  - step: Direct flow to the main codec.
+    action: parsekit.ApplyCodec
+    codec: main
+    when:
+      - "'q1_2015.csv' in metadata.get_closest('name')"

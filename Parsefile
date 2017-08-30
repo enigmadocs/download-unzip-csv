@@ -1,0 +1,16 @@
+###
+# Parsefile for parser1
+# 2017-03-01
+###
+
+name: parser1
+description: "Describe the data being parsed by the parser1 parser"
+maintainers:
+  - John Doe <name@domain.com>
+version: "0.1.0"
+license: none
+source_urls:
+  - "http://example.org/example.csv"
+
+extract:
+  - data.yaml
