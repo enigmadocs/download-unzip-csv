@@ -6,12 +6,12 @@
 extract:
 
   - step: Download the data via HTTP.
-    action: http.DownloadFiles
+    action: extract.source.http.DownloadFiles
     fetch:
       - 'https://s3.amazonaws.com/data-code-test/example.zip'
 
   - step: Unzip the compressed data.
-    action: compression.UncompressFile
+    action: extract.source.compression.UncompressFile
 
   - step: Direct flow to the main codec.
     action: parsekit.ApplyCodec
